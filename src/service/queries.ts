@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GetAccountQuery = gql`
-  query GetAccountQuery($accountowner: String!) {
-    account(accountowner: $accountowner) {
+  query GetAccountQuery($email: String!, $password: String) {
+    getAccount(email: $email, password: $password) {
       _id
       name
       balance

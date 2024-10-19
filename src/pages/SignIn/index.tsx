@@ -8,14 +8,17 @@ import { Account } from '../../../graphqlTypes';
 import { GetAccountQuery } from '../../service/queries';
 import client from '../../../apolloClient';
 import { Button, Input, Label, Card, CardHeader, CardContent, CardFooter } from '../../components/ui';
-import { setLocalStore } from '../../utils/localStorage';
+import { setLocalStorage } from '../../utils/localStorage';
+import { accountStorageKey } from '../../utils/enums';
 
 type dataForm = {
-  accountowner: string;
+  email: string;
+  password: string;
 };
 
 const defaultData : dataForm = {
-  accountowner: ''
+  email: '',
+  password: ''
 };
 
 export default function SigIn () {
@@ -29,21 +32,21 @@ export default function SigIn () {
     e.preventDefault();
     setError('');
 
-    if (data.accountowner === '') {
+    if (data.email === '' || data.password === '') {
       setError("Please fill in all the fields.");
       return;
     };
   
     const response : Account | null = await client.query({
       query: GetAccountQuery,
-      variables: { accountowner: data.accountowner }
+      variables: data,
     }).then((res) => {
-      if(!res.data.account.success){
-        toastGenerator('error', res.data.account.message);
+      if(!res.data.getAccount.success){
+        toastGenerator('error', res.data.getAccount.message);
         return null;
       }
       toastGenerator('success', "Login successful! Welcome back!");
-      return res.data.account;
+      return res.data.getAccount;
     }).catch((err) => {
       console.log(err);
       toastGenerator('error', "There was an error trying to log in. Please try again.");
@@ -52,7 +55,7 @@ export default function SigIn () {
 
     if(response !== null){
       dispatch(setAccount(response));
-      setLocalStore('account', JSON.stringify(response));
+      setLocalStorage(accountStorageKey, JSON.stringify(response));
       navigate('/account');
     };
 
@@ -81,12 +84,23 @@ export default function SigIn () {
           {error && <p className="text-red-500">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Account Owner </Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="accountowner"
-                type="accountowner"
-                value={data.accountowner}
-                onChange={(e)=> handleChange('accountowner', e.target.value)}
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e)=> handleChange('email', e.target.value)}
+                onKeyDown={handleKeyDown}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={data.password}
+                onChange={(e)=> handleChange('password', e.target.value)}
                 onKeyDown={handleKeyDown}
                 required
               />

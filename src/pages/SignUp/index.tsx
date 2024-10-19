@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-
-import { setAccount } from '../../redux/account/accountSlice';
 import { toastGenerator } from '../../utils/toastGenerator';
 import { Account } from '../../../graphqlTypes';
 import { CreateAccountMutation } from '../../service/mutation';
 import client from '../../../apolloClient';
 import { Button, Input, Label, Card, CardHeader, CardContent, CardFooter } from '../../components/ui';
-import { setLocalStore } from '../../utils/localStorage';
 
 type dataForm = {
   name: string;
+  email: string;
+  password: string;
 };
 
 const defaultData : dataForm = {
-  name: ''
+  name: '',
+  email: '',
+  password: ''
 };
 
-export default function SigIn () {
+export default function SignUp () {
   const [data, setData] = useState<dataForm>(defaultData);
   const [error, setError] = useState('');
 
@@ -29,14 +29,14 @@ export default function SigIn () {
     
     setError('');
 
-    if (data.name === '') {
+    if (data.name === '' || data.email === '' || data.password === '') {
       setError('Por favor, preencha todos os campos.');
       return;
     };
   
     const response : Account | null = await client.mutate({
       mutation: CreateAccountMutation,
-      variables: { name: data.name}
+      variables: data, 
     }).then((res) => {
       toastGenerator(res.data.createAccount.success ? 'success' : 'error', res.data.createAccount.message)
       return res.data.createAccount.success ? res.data.account : null;
@@ -74,12 +74,34 @@ export default function SigIn () {
           {error && <p className="text-red-500">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Name</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 type="name"
                 value={data.name}
                 onChange={(e)=> handleChange('name', e.target.value)}
+                onKeyDown={handleKeyDown}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e)=> handleChange('email', e.target.value)}
+                onKeyDown={handleKeyDown}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={data.password}
+                onChange={(e)=> handleChange('password', e.target.value)}
                 onKeyDown={handleKeyDown}
                 required
               />

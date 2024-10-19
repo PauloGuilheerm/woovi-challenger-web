@@ -3,15 +3,17 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { Account } from "../../../graphqlTypes";
 
-const initialState: Account = {
+export const initialAccountState : Account = {
   _id: "",
   balance: 0.0,
   name: "",
+  email: '',
+  password: ''
 };
 
 const accountSlice = createSlice({
   name: "account",
-  initialState,
+  initialState: initialAccountState,
   reducers: {
     setAccount: (state, action: PayloadAction<Account>) => {
       state._id = action.payload._id;
