@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   initialAccountState,
@@ -15,22 +16,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "../../components/ui";
 import { useNavigate } from "react-router-dom";
 import { removeLocalStorage } from "../../utils/localStorage";
 import { accountStorageKey } from "../../utils/enums";
 import Transfer from "./Transfer";
+import Transfers from "./Transfers"; // Renomeado de TransferHistory para Transfers
 
 export default function Account() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const toggleDialog = () => setIsOpen((prev: boolean) => !prev);
   const navigate = useNavigate();
-
   const account = useSelector((state) => state.account);
   const dispatch = useDispatch();
-
-  const handleTransfer = () => {
-    navigate("/transfer");
-  };
 
   const handleLogout = () => {
     navigate("/");
@@ -39,8 +37,8 @@ export default function Account() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="flex justify-center items-center min-h-screen max-h-16 bg-gray-100 space-x-4 pt-4"> 
+      <Card className="flex-1 max-w-md shadow-lg h-[422px]" >
         <CardHeader className="bg-blue-500 text-white text-center">
           <h2 className="text-2xl font-bold">Account Details</h2>
         </CardHeader>
@@ -59,11 +57,10 @@ export default function Account() {
           </div>
         </CardContent>
         <CardFooter className="p-6 flex flex-col items-center space-y-4">
-          <Dialog>
+          <Dialog open={isOpen} onOpenChange={toggleDialog}>
             <DialogTrigger asChild>
               <Button className="w-full mt-4">Make a Transfer</Button>
             </DialogTrigger>
-
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Transfer Money</DialogTitle>
@@ -71,12 +68,7 @@ export default function Account() {
                   Here you can transfer money between accounts.
                 </DialogDescription>
               </DialogHeader>
-              <div>{/* Formulário de transferência aqui */}</div>
-              <DialogFooter>
-                <Button onClick={() => console.log("Transfer confirmed")}>
-                  Confirm Transfer
-                </Button>
-              </DialogFooter>
+              <Transfer toggleDialog={toggleDialog} />
             </DialogContent>
           </Dialog>
           <Button
@@ -87,6 +79,7 @@ export default function Account() {
           </Button>
         </CardFooter>
       </Card>
+      <Transfers />
     </div>
   );
 }

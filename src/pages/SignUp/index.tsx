@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toastGenerator } from '../../utils/toastGenerator';
-import { Account } from '../../../graphqlTypes';
-import { CreateAccountMutation } from '../../service/mutation';
-import client from '../../../apolloClient';
 import { Button, Input, Label, Card, CardHeader, CardContent, CardFooter } from '../../components/ui';
+import { createAccountType } from '../../hooks/accounHooksTypes.type';
+import { createAccount } from '../../hooks/accountHooks';
 
-type dataForm = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-const defaultData : dataForm = {
+const defaultData : createAccountType = {
   name: '',
   email: '',
   password: ''
 };
 
 export default function SignUp () {
-  const [data, setData] = useState<dataForm>(defaultData);
+  const [data, setData] = useState<createAccountType>(defaultData);
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
@@ -34,16 +26,7 @@ export default function SignUp () {
       return;
     };
   
-    const response : Account | null = await client.mutate({
-      mutation: CreateAccountMutation,
-      variables: data, 
-    }).then((res) => {
-      toastGenerator(res.data.createAccount.success ? 'success' : 'error', res.data.createAccount.message)
-      return res.data.createAccount.success ? res.data.account : null;
-    }).catch((err) => {
-      toastGenerator('error', err.message);
-      return null;
-    });
+    const response = createAccount(data);
 
     if(response !== null){
       navigate('/signin');

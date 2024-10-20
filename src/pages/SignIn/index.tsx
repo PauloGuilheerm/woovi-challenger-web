@@ -3,26 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 
 import { setAccount } from '../../redux/account/accountSlice';
-import { toastGenerator } from '../../utils/toastGenerator';
-import { Account } from '../../../graphqlTypes';
-import { GetAccountQuery } from '../../service/queries';
-import client from '../../../apolloClient';
 import { Button, Input, Label, Card, CardHeader, CardContent, CardFooter } from '../../components/ui';
 import { setLocalStorage } from '../../utils/localStorage';
 import { accountStorageKey } from '../../utils/enums';
+import { getAccount } from '../../hooks/accountHooks';
+import { getAccountType } from '../../hooks/accounHooksTypes.type';
 
-type dataForm = {
-  email: string;
-  password: string;
-};
 
-const defaultData : dataForm = {
+const defaultData : getAccountType = {
   email: '',
   password: ''
 };
 
 export default function SigIn () {
-  const [data, setData] = useState<dataForm>(defaultData);
+  const [data, setData] = useState<getAccountType>(defaultData);
   const [error, setError] = useState('');
 
   const dispatch = useDispatch();
@@ -36,23 +30,9 @@ export default function SigIn () {
       setError("Please fill in all the fields.");
       return;
     };
-  
-    const response : Account | null = await client.query({
-      query: GetAccountQuery,
-      variables: data,
-    }).then((res) => {
-      if(!res.data.getAccount.success){
-        toastGenerator('error', res.data.getAccount.message);
-        return null;
-      }
-      toastGenerator('success', "Login successful! Welcome back!");
-      return res.data.getAccount;
-    }).catch((err) => {
-      console.log(err);
-      toastGenerator('error', "There was an error trying to log in. Please try again.");
-      return null;
-    });
 
+    const response = await getAccount(data);
+    
     if(response !== null){
       dispatch(setAccount(response));
       setLocalStorage(accountStorageKey, JSON.stringify(response));

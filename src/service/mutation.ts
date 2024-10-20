@@ -10,8 +10,8 @@ export const CreateAccountMutation = gql`
 `;
 
 export const TransferMoneyMutation = gql`
-  mutation TransferMoneyMutation($fromId: ID!, $toId: ID!, $amount: Float!) {
-    transferMoney(fromId: $fromId, toId: $toId, amount: $amount) {
+  mutation TransferMoneyMutation($fromEmail: String!, $toEmail: String!, $amount: Float!) {
+    transferMoney(fromEmail: $fromEmail, toEmail: $toEmail, amount: $amount) {
       success
       message
     }

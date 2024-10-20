@@ -19,6 +19,7 @@ const accountSlice = createSlice({
       state._id = action.payload._id;
       state.balance = action.payload.balance;
       state.name = action.payload.name;
+      state.email = action.payload.email;
     },
   },
 });
