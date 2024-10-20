@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import type { Account } from "../../../graphqlTypes";
+import type { Account } from "@/graphqlTypes";
 
 export const initialAccountState : Account = {
   _id: "",

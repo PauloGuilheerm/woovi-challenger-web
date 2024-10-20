@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 import { Card, CardHeader, CardContent } from "../../components/ui";
 import { getTransfers } from "../../hooks/transferMoney";
 import { transfer } from "../../hooks/transferMoneyTypes.type";
+import { rootState } from "../../redux/store";
 
 export default function Transfers() {
   const [transfers, setTransfers] = useState<transfer[]>([]);
 
-  const account = useSelector((state) => state.account);
+  const account = useSelector((state : rootState) => state.account);
 
   useEffect(() => {
     if (account.email === "") return;

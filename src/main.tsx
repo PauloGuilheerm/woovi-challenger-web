@@ -3,11 +3,11 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { ApolloProvider } from "@apollo/client";
+
 import store from './redux/store'
+import client from "../apolloClient";
 
-import client from "../apolloClient.ts";
-
-import App from "./App.tsx";
+import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

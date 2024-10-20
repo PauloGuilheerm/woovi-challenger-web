@@ -6,6 +6,7 @@ import { handleTransferMoney } from "../../hooks/transferMoney";
 import { transferMoneyType } from "../../hooks/transferMoneyTypes.type";
 import { Input, Label, Button, DialogFooter } from "../../components/ui";
 import { getAccountById } from "../../hooks/accountHooks";
+import { RootState } from "../../redux/store";
 
 
 const defaultData: transferMoneyType = {
@@ -21,7 +22,8 @@ export default function Transfer({ toggleDialog } : transferProps) {
   const [data, setData] = useState<transferMoneyType>(defaultData);
   const [error, setError] = useState("");
 
-  const account = useSelector((state) => state.account);
+  const account = useSelector((state : RootState ) => state.account);
+
   const dispatch = useDispatch();
 
   const handleChange = (field: string, value: string) => {

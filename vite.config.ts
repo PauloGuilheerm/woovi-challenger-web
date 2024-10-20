@@ -7,11 +7,5 @@ export default defineConfig({
   plugins: [
     react(),
   graphqlLoader()
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@Pages": path.resolve(__dirname, "./src/pages"),
-    },
-  },
+  ]
 });

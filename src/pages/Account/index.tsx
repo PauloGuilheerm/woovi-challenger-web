@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  initialAccountState,
-  setAccount,
-} from "../../redux/account/accountSlice";
+import { useNavigate } from "react-router-dom";
+
+import {initialAccountState, setAccount} from "../../redux/account/accountSlice";
+import { rootState } from "../../redux/store";
 import {
   Button,
   Card,
@@ -17,17 +17,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../../components/ui";
-import { useNavigate } from "react-router-dom";
 import { removeLocalStorage } from "../../utils/localStorage";
 import { accountStorageKey } from "../../utils/enums";
+
 import Transfer from "./Transfer";
-import Transfers from "./Transfers"; // Renomeado de TransferHistory para Transfers
+import Transfers from "./Transfers";
 
 export default function Account() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggleDialog = () => setIsOpen((prev: boolean) => !prev);
   const navigate = useNavigate();
-  const account = useSelector((state) => state.account);
+
+  const account = useSelector((state : rootState) => state.account);
+  
   const dispatch = useDispatch();
 
   const handleLogout = () => {

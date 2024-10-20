@@ -1,9 +1,11 @@
 import { toastGenerator } from '../utils/toastGenerator';
 import { Account } from '../../graphqlTypes';
 import client from '../../apolloClient';
-import { getAccountType, createAccountType } from './accounHooksTypes.type';
+
 import { GetAccountQuery, GetAccountByIdQuery } from '../service/queries';
 import { CreateAccountMutation } from '../service/mutation';
+
+import { getAccountType, createAccountType } from './accounHooksTypes.type';
 
 export const getAccountById = async (id : string) : Promise<Account | null > => {
   const account : Account | null = await client

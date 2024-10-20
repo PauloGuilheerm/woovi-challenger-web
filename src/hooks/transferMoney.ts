@@ -4,6 +4,7 @@ import { TransferMoneyMutation } from '../service/mutation';
 import { GetTransfers } from '../service/queries';
 import { Account, TransferMoneyResponse } from '../../graphqlTypes';
 import { toastGenerator } from "../utils/toastGenerator";
+
 import { transferMoneyType, transfer } from './transferMoneyTypes.type';
 
 export const handleTransferMoney = async (data : transferMoneyType, account : Account) : Promise<TransferMoneyResponse | null>=> {
