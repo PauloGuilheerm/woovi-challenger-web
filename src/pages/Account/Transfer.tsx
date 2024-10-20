@@ -7,7 +7,7 @@ import { transferMoneyType } from "../../hooks/transferMoneyTypes.type";
 import { Input, Label, Button, DialogFooter } from "../../components/ui";
 import { getAccountById } from "../../hooks/accountHooks";
 import { RootState } from "../../redux/store";
-
+import LoadingSpinner from "../../components/loading";
 
 const defaultData: transferMoneyType = {
   email: "",
@@ -20,7 +20,8 @@ type transferProps = {
 
 export default function Transfer({ toggleDialog } : transferProps) {
   const [data, setData] = useState<transferMoneyType>(defaultData);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
+  const [saving, setSaving] = useState<boolean>(false);
 
   const account = useSelector((state : RootState ) => state.account);
 
@@ -43,7 +44,10 @@ export default function Transfer({ toggleDialog } : transferProps) {
       return;
     };
 
+    setSaving(true);
+
     const response = await handleTransferMoney(data, account);
+
     if(response !== null) {
       const updatedAccount = await getAccountById(account._id);
       
@@ -51,8 +55,9 @@ export default function Transfer({ toggleDialog } : transferProps) {
         dispatch(setAccount(updatedAccount));
         toggleDialog();
       }
-    }
-    
+    };
+
+    setSaving(false);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -79,7 +84,6 @@ export default function Transfer({ toggleDialog } : transferProps) {
         <div>
           <Label htmlFor="amount">Value</Label>
           <Input
-
             id="amount"
             type="number"
             value={data.amount}
@@ -90,8 +94,9 @@ export default function Transfer({ toggleDialog } : transferProps) {
           />
         </div>
         <DialogFooter>
-          <Button onClick={() => console.log("Transfer confirmed")}>
-            Confirm Transfer
+          <Button>
+            {saving ? 'Transfering...' : 'Confirm Transfer'}
+            {saving ? <LoadingSpinner /> : null}
           </Button>
         </DialogFooter>
       </form>
