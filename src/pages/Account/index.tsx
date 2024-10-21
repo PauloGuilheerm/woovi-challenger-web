@@ -39,15 +39,15 @@ export default function Account() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen max-h-16 bg-gray-100 space-x-4 pt-4"> 
-      <Card className="flex-1 max-w-md shadow-lg h-[422px]" >
-        <CardHeader className="bg-blue-500 text-white text-center">
+    <div className="flex justify-center items-center min-h-screen max-h-16 bg-gray-100 space-x-4 pt-4 bg-gray-300"> 
+      <Card className="flex-1 max-w-md shadow-lg h-[428px]" >
+        <CardHeader className="text-black text-center bg-gray-100 border-b-2">
           <h2 className="text-2xl font-bold">Account Details</h2>
         </CardHeader>
-        <CardContent className="p-6 space-y-4">
+        <CardContent className="p-6 space-y-4 bg-gray-100">
           <div>
             <label className="block text-lg font-medium">Name:</label>
-            <p className="text-xl font-semibold">{account.name}</p>
+            <p className="text-xl font-semibold capitalize">{account.name}</p>
           </div>
           <div>
             <label className="block text-lg font-medium">
@@ -58,10 +58,10 @@ export default function Account() {
             </p>
           </div>
         </CardContent>
-        <CardFooter className="p-6 flex flex-col items-center space-y-4">
+        <CardFooter className="p-6 flex flex-col items-center space-y-4 bg-gray-100">
           <Dialog open={isOpen} onOpenChange={toggleDialog}>
             <DialogTrigger asChild>
-              <Button className="w-full mt-4">Make a Transfer</Button>
+              <Button className="w-full mt-4 bg-green-600">Make a Transfer</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

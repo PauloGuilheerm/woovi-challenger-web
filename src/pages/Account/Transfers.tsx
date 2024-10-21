@@ -5,9 +5,11 @@ import { Card, CardHeader, CardContent } from "../../components/ui";
 import { getTransfers } from "../../hooks/transferMoney";
 import { transfer } from "../../hooks/transferMoneyTypes.type";
 import { rootState } from "../../redux/store";
+import LoadingSpinner from "../../components/loading";
 
 export default function Transfers() {
   const [transfers, setTransfers] = useState<transfer[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const account = useSelector((state : rootState) => state.account);
 
@@ -15,10 +17,14 @@ export default function Transfers() {
     if (account.email === "") return;
 
     const loadData = async () => {
+      setLoading(true);
+
       const data: transfer[] | null = await getTransfers(account.email);
       if (data) {
         setTransfers(data);
-      }
+      };
+
+      setLoading(false);
     };
 
     loadData();
@@ -26,12 +32,13 @@ export default function Transfers() {
 
   return (
     <div className="flex-1 max-w-md">
-      <Card className="w-full mb-4 shadow-lg">
-        <CardHeader>
-          <h2 className="text-center text-lg font-bold">Transfers</h2>
+      <Card className="w-full shadow-lg">
+        <CardHeader className="bg-gray-100 text-black text-center border-b-2">
+          <h2 className="text-2xl font-bold">Transfers</h2>
         </CardHeader>
-        <CardContent className="h-[345px] overflow-y-scroll">
-          {transfers.length === 0 ? (
+        <CardContent className="h-[345px] overflow-y-scroll bg-gray-100">
+          {loading ? <LoadingSpinner className="mt-3"/> :
+          transfers.length === 0 ? (
             <p className="text-center">No transfers available.</p>
           ) : (
             transfers.map((transfer) => (
@@ -50,7 +57,7 @@ type TransferProps = {
 
 function Transfer({ transfer }: TransferProps) {
   return (
-    <div className="space-y-4 py-3 border-t border-gray-400">
+    <div className="space-y-4 py-3 border-b border-gray-400">
       <p>
         <strong>From:</strong> {transfer.fromEmail}
       </p>

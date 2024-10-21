@@ -94,7 +94,7 @@ export default function Transfer({ toggleDialog } : transferProps) {
           />
         </div>
         <DialogFooter>
-          <Button>
+          <Button className="bg-green-600" disabled={saving}>
             {saving ? 'Transfering...' : 'Confirm Transfer'}
             {saving ? <LoadingSpinner /> : null}
           </Button>

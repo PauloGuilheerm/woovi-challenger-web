@@ -14,7 +14,7 @@ import { setAccount } from "./redux/account/accountSlice";
 import { RootState } from "./redux/store";
 import { getAccountById } from "./hooks/accountHooks";
 import { getLocalStorage } from "./utils/localStorage";
-import { accountStorageKey } from './utils/enums';
+import { accountStorageKey } from "./utils/enums";
 import { Account as AccountType } from "../graphqlTypes";
 
 type RenderComponentType = {
@@ -32,9 +32,11 @@ export default function AppRoutes() {
   const [hasStorageData, setHasStorageData] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const account = useSelector((state : RootState) => state.account);
+  const account: AccountType = useSelector((state: RootState) => state.account);
 
   useLayoutEffect(() => {
+    if (account._id === "") return;
+
     const loadData = async () => {
       const data = getLocalStorage(accountStorageKey);
       const accountData: AccountType | null = data ? JSON.parse(data) : null;
@@ -43,7 +45,7 @@ export default function AppRoutes() {
         const updatedData = await getAccountById(accountData._id);
         setHasStorageData(true);
 
-        if(updatedData !== null){
+        if (updatedData !== null) {
           dispatch(setAccount(updatedData));
         }
         return;
@@ -53,28 +55,22 @@ export default function AppRoutes() {
     };
 
     loadData();
-  }, [account]);
+  }, [account._id]);
 
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={
-            <Navigate to={hasStorageData ? "/account" : "signup"} replace />
-          }
+          element={<Navigate to={hasStorageData ? "/account" : "signup"} replace />}
         />
         <Route
           path="/signin"
-          element={
-            <RenderComponent hasData={hasStorageData} Component={SignIn} />
-          }
+          element={<RenderComponent hasData={hasStorageData} Component={SignIn} />}
         />
         <Route
           path="/signup"
-          element={
-            <RenderComponent hasData={hasStorageData} Component={SignUp} />
-          }
+          element={<RenderComponent hasData={hasStorageData} Component={SignUp} />}
         />
         <Route path="/account" element={<Account />} />
       </Routes>
