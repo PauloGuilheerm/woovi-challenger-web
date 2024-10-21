@@ -35,8 +35,6 @@ export default function AppRoutes() {
   const account: AccountType = useSelector((state: RootState) => state.account);
 
   useLayoutEffect(() => {
-    if (account._id === "") return;
-
     const loadData = async () => {
       const data = getLocalStorage(accountStorageKey);
       const accountData: AccountType | null = data ? JSON.parse(data) : null;
