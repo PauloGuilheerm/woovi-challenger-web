@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../../components/ui';
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../components/ui';
 
 describe('Card Components', () => {
   test('renders Card component with given className', () => {

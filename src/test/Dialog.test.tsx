@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from '../../components/ui';
+} from '../components/ui';
 
 const MockDialog = () => (
   <Dialog open={true}>

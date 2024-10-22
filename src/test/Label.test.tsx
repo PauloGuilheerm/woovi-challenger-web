@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { Label } from '../../components/ui';
+import { Label } from '../components/ui';
 
 describe('Label Component', () => {
   test('renders Label component with default props', () => {

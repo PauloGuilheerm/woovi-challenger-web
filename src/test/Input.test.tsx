@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { Input } from '../../components/ui';
+import { Input } from '../components/ui';
 
 describe('Input Component', () => {
   test('renders Input component with default props', () => {

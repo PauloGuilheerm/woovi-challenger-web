@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react"
-import { Button } from "../../components/ui/button"
+import { Button } from "../components/ui/button"
 
 describe("Button Component", () => {
   test("renders with default variant and size", () => {
